@@ -13,12 +13,3 @@ void reverseWordsWithLengthHigherThanSpecified(const char *);
 void choose_task(void(*[])(const char *), int , const char *);
 
 #endif
-
-/**
- * cd Lab2_lib
- * gcc -c Lab2_functions.c
- * ar rcs libLab2.a Lab2_functions.o
- * cd ..
- * gcc Lab2.c -I./Lab2_lib -L./Lab2_lib -lLab2 -o Lab2
- * ./Lab2 input.txt
-*/
