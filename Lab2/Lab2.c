@@ -44,31 +44,3 @@ int main(int argc, char *args[]) {
 
     return 0;
 }
-
-
-
-
-
-// do {
-    //     puts("\nEnter 1 to run task 1\nEnter 2 to run task 2\nEnter 3 to run task 3");
-
-    //     int input = 0;
-
-    //     while(1) {
-    //         if (intInputCheck(&input) && input >= 1 && input <= 3) {    
-    //             break;
-    //         }
-    //         else {
-    //             printErrorMessage("Invalid input! Please, enter a number.");
-    //         }
-    //     }
-
-    //     if (input == 1) {
-    //         task_1(args[1]);
-    //     }
-    //     else if (input == 2){
-    //         task_2(args[1]);
-    //     }
-    //     else {
-    //         task_3(args[1]);
-    //     }
