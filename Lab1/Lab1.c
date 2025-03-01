@@ -116,7 +116,7 @@ int elementsHigherThanSumOfPrevious(const char *filename) {
 
     if (fread(&num, sizeof(int), 1, file) != 1) {
         fclose(file);
-        return 0;  // Если файл пуст, возвращаем 0
+        return 0;
     }
 
     sum = num;
