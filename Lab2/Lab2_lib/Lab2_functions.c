@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <conio.h>
-#include <string.h>
+#include <ctype.h>
 #include "Lab2_functions.h"
 
 #define MAX_SIZE 100
@@ -83,7 +83,7 @@ int inputTextFile(const char *filename) {
 
         fgets(word, sizeof(word), stdin);
 
-        size_t len = strlen(word);
+        int len = line_length(word);
         if (len > 0 && word[len - 1] == '\n') {
             word[len - 1] = '\0';
         }
@@ -142,7 +142,7 @@ void findWordsWithSpecifiedLength(const char *filename) {
 }
 
 void reverseWordsWithLengthHigherThanSpecified(const char *filename) {
-    FILE *file = fopen(filename, "r");
+    FILE *file = fopen(filename, "r+");
     if (file == NULL) {
         perror("Error opening file");
         exit(1);
@@ -160,22 +160,36 @@ void reverseWordsWithLengthHigherThanSpecified(const char *filename) {
     }
 
     char word[256];
+    int ch;
+    long start_pos;
+    
+    while ((ch = fgetc(file)) != EOF) {
+        if (!isspace(ch)) {
+            start_pos = ftell(file) - 1;
+            fseek(file, start_pos, SEEK_SET);
+            fscanf(file, "%255s", word);
+            int length = line_length(word);
+            if (length > input) {
+                for (int i = 0; i < length / 2; i++) {
+                    long left_pos = start_pos + i;
+                    long right_pos = start_pos + length - 1 - i;
 
-    puts("Reversed words:");
-    while (fscanf(file, "%255s", word) == 1) {
-        int length = line_length(word);
+                    fseek(file, left_pos, SEEK_SET);
+                    char left_char = fgetc(file);
 
-        if(input < length) {
+                    fseek(file, right_pos, SEEK_SET);
+                    char right_char = fgetc(file);
 
-            for (int i = 0; i < length / 2; i++) {
-                int temp = word[i];
-                word[i] = word[length - 1 - i];
-                word[length - 1 - i] = temp;
+                    fseek(file, left_pos, SEEK_SET);
+                    fputc(right_char, file);
+
+                    fseek(file, right_pos, SEEK_SET);
+                    fputc(left_char, file);
+                }
             }
-            printf("%s ", word);
+            fseek(file, start_pos + length, SEEK_SET);
         }
     }
-    puts("");
 
     fclose(file);
 }
