@@ -24,7 +24,7 @@ typedef struct {
     char *name;
     struct {
         char year_of_the_last_win[1024];
-        int loses; 
+        int loses;
     } aditionalInfo;
 } FootballTeam;
 
