@@ -5,6 +5,7 @@
         "conio.h": "c",
         "lab3_functions.h": "c",
         "stdlib.h": "c",
-        "lab5_functions.h": "c"
+        "lab5_functions.h": "c",
+        "lab6_functions.h": "c"
     }
 }

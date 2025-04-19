@@ -3,6 +3,7 @@
 // gcc Lab5.1.c -LLab5_lib -lLab5 -o Lab5.1.exe
 // gcc Lab5.2.c -LLab5_lib -lLab5 -o Lab5.2.exe
 // gcc Lab5.3.c -LLab5_lib -lLab5 -o Lab5.3.exe
+// В минус минус
 
 #ifndef LAB5_FUNCTIONS_H
 #define LAB5_FUNCTIONS_H
