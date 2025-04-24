@@ -38,6 +38,20 @@ int naturalIntInputCheck(int *element) {
     return 1;
 }
 
+int naturalIntInputCheck0(int *element) {
+    char symbol;
+
+	if (scanf_s("%d%c", element, &symbol) != 2 || symbol != '\n') {
+        while (getchar() != '\n');
+        return 0;
+    }
+    else if (*element < 0) {
+        return 0;
+    }
+    
+    return 1;
+}
+
 void isNum(int *input) {
     while (1) {
         if (intInputCheck(input)) {
@@ -51,6 +65,16 @@ void isNum(int *input) {
 void isNaturalNum(int *input) {
     while (1) {
         if (naturalIntInputCheck(input)) {
+            break;
+        }
+
+        printErrorMessage("Invalid input! Enter a natural number.");
+    }
+}
+
+void isNaturalNum0(int *input) {
+    while (1) {
+        if (naturalIntInputCheck0(input)) {
             break;
         }
 
@@ -429,4 +453,136 @@ int evaluate_postfix(const char* expression, double* result) {
 
     *result = pop_double(&stack);
     return 1;
+}
+
+Stack* createStack(Stack* begin, int size) {
+    int input = 0;
+
+    for(size_t i = 0; i < size; i++) {
+        printf("Info %zu = ", i + 1);
+        isNum(&input);
+        begin = push(begin, input);
+    }
+
+    return begin;
+}
+
+Stack* createDescStack(Stack* begin, int size) {
+    int input = 0;
+
+    for(size_t i = 0; i < size; i++) {
+        printf("Info %zu = ", i + 1);
+        while(1) {
+            isNum(&input);
+            if(!begin || input >= peek(begin)) {
+                begin = push(begin, input);
+                break;
+            }
+            else {
+                printErrorMessage("Invalid input! Enter a number higher than a previous one.");
+            }
+        }
+    }
+
+    return begin;
+}
+
+Stack* createAscStack(Stack* begin, int size) {
+    int input = 0;
+
+    for(size_t i = 0; i < size; i++) {
+        printf("Info %zu = ", i + 1);
+        while(1) {
+            isNum(&input);
+            if(!begin || input <= peek(begin)) {
+                begin = push(begin, input);
+                break;
+            }
+            else {
+                printErrorMessage("Invalid input! Enter a number lower than a previous one.");
+            }
+        }
+    }
+
+    return begin;
+}
+
+void menuOption3() {
+    FILE* in = fopen("expressions.txt", "r");
+    FILE* out = fopen("results.txt", "w");
+
+    if (!in || !out) {
+        printErrorMessage("Failed to open the file!");
+        exit(0);
+    }
+
+    char line[256];
+    while (fgets(line, sizeof(line), in)) {
+        line[mstrcspn(line, "\n")] = '\0';
+        if (lineLength(line) == 0) continue;
+
+        char postfix[512];
+        int error_spot;
+
+        if (!infix_to_postfix(line, postfix, &error_spot)) {
+            fprintf(out, "Mistake in position %d\n", error_spot + 1);
+            continue;
+        }
+
+        double result;
+        int eval_status = evaluate_postfix(postfix, &result);
+
+        if (eval_status == -1) {
+            fprintf(out, "Error: division by 0\n");
+        } else if (eval_status == 0) {
+            fprintf(out, "Error in expression\n");
+        } else {
+            fprintf(out, "%.6lf\n", result);
+        }
+    }
+
+    fclose(in);
+    fclose(out);
+}
+
+void menuOption2() {
+    Stack *begin1 = NULL, *begin2 = NULL, *begin3 = NULL;
+    int size = 0;
+
+    puts("\nEnter a num of elements for stack 1: ");
+    isNaturalNum(&size);
+
+    begin1 = createDescStack(begin1, size);
+
+    puts("\nEnter a num of elements for stack 2: ");
+    isNaturalNum(&size);
+
+    begin2 = createAscStack(begin2, size);
+
+    begin3 = mergeStacksToDescending(begin1, begin2);
+
+    puts("\nNew stack: \n");
+    viewStack(begin3);
+    freeStack(&begin3);
+}
+
+void menuOption1() {
+    Stack *begin1 = NULL, *begin2 = NULL;
+    int size = 0;
+
+    puts("\nEnter a num of elements for stack 1: ");
+    isNaturalNum(&size);
+
+    begin1 = createStack(begin1, size);
+
+    puts("\nEnter a num of elements for stack 2: ");
+    isNaturalNum(&size);
+
+    begin2 = createStack(begin2, size);
+
+    puts("Elements from stack 2 that exist more than 2 times in stack 1: ");
+    outputElementsFromStack1ThatAreMetTwoTimesInStack2(begin2, begin1);
+
+    freeStack(&begin1);
+    freeStack(&begin2);
 }

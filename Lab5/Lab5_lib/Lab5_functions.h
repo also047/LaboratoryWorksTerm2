@@ -1,8 +1,6 @@
 // gcc -c Lab5_lib/Lab5_functions.c -o Lab5_lib/Lab5_functions.o
 // ar rcs Lab5_lib/libLab5.a Lab5_lib/Lab5_functions.o
-// gcc Lab5.1.c -LLab5_lib -lLab5 -o Lab5.1.exe
-// gcc Lab5.2.c -LLab5_lib -lLab5 -o Lab5.2.exe
-// gcc Lab5.3.c -LLab5_lib -lLab5 -o Lab5.3.exe
+// gcc Lab5.c -LLab5_lib -lLab5 -o Lab5.exe
 // В минус минус
 
 #ifndef LAB5_FUNCTIONS_H
@@ -26,8 +24,10 @@ typedef struct CharStack {
 void printErrorMessage(char message[]);
 int intInputCheck(int *element);
 int naturalIntInputCheck(int *element);
+int naturalIntInputCheck0(int *element);
 void isNum(int *input);
 void isNaturalNum(int *input);
+void isNaturalNum0(int *input);
 Stack* push(Stack *begin, int info);
 int peek(Stack *begin);
 int pop(Stack **begin);
@@ -53,5 +53,11 @@ int is_operator(char c);
 int operation(char operation);
 int infix_to_postfix(const char* expression, char* output, int* error_spot);
 int evaluate_postfix(const char* expression, double* result);
+Stack* createDescStack(Stack* begin, int size);
+Stack* createAscStack(Stack* begin, int size);
+Stack* createStack(Stack* begin, int size);
+void menuOption1();
+void menuOption2();
+void menuOption3();
 
 #endif
